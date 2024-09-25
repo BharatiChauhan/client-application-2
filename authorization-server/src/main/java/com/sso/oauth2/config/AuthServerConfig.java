@@ -17,8 +17,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @Configuration
 @EnableAuthorizationServer
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
-	@Value("${auth.clienId}")
-	private String clienId;
+	@Value("${auth.clientId}")
+	private String clientId;
 	
 	@Value("${auth.secretId}")
 	private String secretId;
@@ -53,7 +53,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient(clienId)
+                .withClient(clientId)
                 .secret(passwordEncoder.encode(secretId))
                 .authorizedGrantTypes("authorization_code", "password", "client_credentials")
                 .scopes("user_info", "read", "write")
