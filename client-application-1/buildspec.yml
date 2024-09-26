@@ -1,0 +1,24 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Docker Hub
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+  build:
+    commands:
+      - echo Building and tagging Docker image on $(date)
+      - mvn clean install
+      - echo Building Docker image
+      - docker build -t $DOCKER_USERNAME/$IMAGE_NAME:latest .
+
+  post_build:
+    commands:
+      - echo Pushing Docker image to Docker Hub
+      - docker push $DOCKER_USERNAME/$IMAGE_NAME:latest
+      - echo Build completed successfully.
+
+artifacts:
+  files:
+    - target/client-application-1.jar
+  discard-paths: yes
